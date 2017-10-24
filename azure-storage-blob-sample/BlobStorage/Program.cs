@@ -16,8 +16,9 @@ namespace BlobStorage
 
       //Upload(blobContainer);
       //ListAttributes(blobContainer);
-      SetMetadata(blobContainer);
-      ListMetadata(blobContainer);
+      //SetMetadata(blobContainer);
+      //ListMetadata(blobContainer);
+      CopyBlob(blobContainer);
 
       Console.ReadLine();
 
@@ -59,6 +60,13 @@ namespace BlobStorage
         Console.WriteLine($"Key : {item.Key}");
         Console.WriteLine($"Value : {item.Value}\n\n");
       }
+    }
+
+    static void CopyBlob(CloudBlobContainer container)
+    {
+      CloudBlockBlob blockBlob  = container.GetBlockBlobReference("test_block_blob");
+      CloudBlockBlob copyBlckBlob = container.GetBlockBlobReference("copy-of-test_block_blob");
+      copyBlckBlob.StartCopyAsync(blockBlob);
     }
 
   }
