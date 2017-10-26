@@ -18,7 +18,8 @@ namespace BlobStorage
       //ListAttributes(blobContainer);
       //SetMetadata(blobContainer);
       //ListMetadata(blobContainer);
-      CopyBlob(blobContainer);
+      //CopyBlob(blobContainer);
+      UploadSubdirectories(blobContainer);
 
       Console.ReadLine();
 
@@ -67,6 +68,18 @@ namespace BlobStorage
       CloudBlockBlob blockBlob  = container.GetBlockBlobReference("test_block_blob");
       CloudBlockBlob copyBlckBlob = container.GetBlockBlobReference("copy-of-test_block_blob");
       copyBlckBlob.StartCopyAsync(blockBlob);
+    }
+
+    static void UploadSubdirectories(CloudBlobContainer container)
+    {
+      CloudBlobDirectory directory = container.GetDirectoryReference("parent-directory");
+      CloudBlobDirectory subdirectory = directory.GetDirectoryReference("child-directory");
+      CloudBlockBlob blockBlob = subdirectory.GetBlockBlobReference("532_OD_Changes.pdf");
+
+      using (var fileStream = File.OpenRead(@"D:\temp\532_OD_Changes.pdf"))
+      {
+        blockBlob.UploadFromStream(fileStream);
+      }
     }
 
   }
